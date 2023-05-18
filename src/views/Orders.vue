@@ -11,7 +11,7 @@ export default {
   data(){
     return{
       nombre: localStorage.getItem("nombre"),
-      showModal: true,
+      showModalAdd: false,
       range: {
       start: null,
       end: null
@@ -40,6 +40,10 @@ export default {
     }
   },
   methods:{
+    showModalAddT(){
+      this.showModalAdd = true
+      console.log(this.showModalAdd)
+    },
     filtrarFechas(){
       const formattedStartDate = moment(this.range.start).format('YYYY/MM/DD').replace(/\//g,"-")
       const formattedEndDate = moment(this.range.end).format('YYYY/MM/DD').replace(/\//g,"-")  
@@ -47,8 +51,6 @@ export default {
       axios.get(url)
         .then( response => {
           this.json = response.data
-          console.log( this.json[0])
-          console.log(this.json.length)
           const rows = []
           for (let i = 0; i < this.json.length ; i++) {
             const row = {
@@ -62,7 +64,7 @@ export default {
           this.rows = rows; 
         })
         const medicamentosFormato = (i) => {
-          const jsonObject = JSON.parse(this.json[i].medicamentos);
+          const jsonObject = JSON.parse(this.json[i].medicamentos)
           const formattedString = Object.keys(jsonObject)
             .map(key => `${key}: $${jsonObject[key]}`)
             .join(', ')
@@ -106,7 +108,7 @@ export default {
     </div>
     <div class="column is-7 has-text-right">
       
-      <button class="button is-primary" @click="test" >
+      <button class="button is-primary" @click="showModalAddT">
         <span class="icon mr-1"> <i class="fa fa-plus"></i> </span> Agregar
       </button>
     </div>
@@ -140,7 +142,7 @@ export default {
     </div>
 
     <!-- Modal (This will be a component) -->
-    <div v-show="false" class="custom-modal-overlay">
+    <div v-show="showModalAdd" class="custom-modal-overlay">
       <div class="custom-modal">
         <div class="columns is-multiline px-5">
           <div class="column is-12 mt-5">
@@ -263,9 +265,9 @@ export default {
             <button class="button is-primary is-fullwidth">Guardar</button>
           </div>
         </div>
-      </div>
-      <div class="close">
-        <i class="fa fa-times"></i>
+        <button class="modal-close" @click="showModalAdd = false">
+          <i class="fa fa-times"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -300,4 +302,93 @@ export default {
 .is-bordered {
   border-bottom: 1px solid black;
 }
+
+
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Estilos adicionales para personalizar el modal */
+.custom-modal .title {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.custom-modal .field {
+  margin-bottom: 10px;
+}
+
+.custom-modal .field .label {
+  color: #666;
+  font-size: 14px;
+}
+
+.custom-modal .field .input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
+
+
+.custom-modal .field .icon {
+  color: #ccc;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.custom-modal .button {
+  background-color:rgba(19, 218, 168, 0.9);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-modal .button:hover {
+  background-color: #0f5d75;
+}
+
+.custom-modal .button:active {
+  background-color: rgba(86, 221, 187, 0.9);
+}
+.modal-close {
+  background-color: rgba(19, 218, 168, 0.9);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+
 </style>

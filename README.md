@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Vue App to visualize, add and export medical orders.
 
 ### This is an introduction example to understand the basics of:
@@ -12,3 +13,6 @@
 8. Vue Good Table (Smart & Complete table library)
 9. Bulma (CSS framework)
 10. Reusable components
+=======
+# front-webPrueba
+>>>>>>> 51526c38ee748a94915c821d839db00aac4cd1a8
